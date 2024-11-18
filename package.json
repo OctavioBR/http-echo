@@ -1,21 +1,27 @@
 {
-  "name": "@solsson/http-echo",
-  "version": "1.0.1",
-  "description": "JSON service for debugging a web setup",
+  "name": "http-echo",
+  "version": "1.0.0",
+  "description": "Simple http server that echoes request data, useful for debugging",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Ryan Muller <ryan@kennship.com>",
-  "license": "BSD-3-Clause",
+  "author": "Octávio Richter <octaviorichter@gmail.com>",
+  "license": "GNU GPLv3",
   "engines": {
     "node": ">=6.3.0"
   },
   "dependencies": {
     "concat-stream": "2.0.0",
-    "morgan": "1.10.0",
-    "jsonwebtoken": "9.0.2",
-    "express": "4.21.1"
+    "express": "4.21.1",
+    "morgan": "1.10.0"
+  },
+  "devDependencies": {
+    "@types/concat-stream": "^2.0.3",
+    "@types/express": "^5.0.0",
+    "@types/morgan": "^1.9.9",
+    "typescript": "^5.6.3"
   }
 }

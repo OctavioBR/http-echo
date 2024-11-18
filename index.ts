@@ -1,23 +1,21 @@
-const os = require('os');
-const express = require('express');
-const morgan = require('morgan');
-const concat = require('concat-stream');
-const jwt = require('jsonwebtoken');
+import { hostname }  from 'os';
+import { Request, Response, NextFunction } from 'express';
+import express = require('express');
+import concat = require('concat-stream');
+import morgan = require('morgan');
 
-let app = express();
-
+const app = express();
 app.set('json spaces', 2);
-
 app.use(morgan('combined'));
 
-app.use((req, res, next) => {
-  req.pipe(concat(data => {
+app.use((req: Request, _: Response, next: NextFunction) => {
+  req.pipe(concat((data: Buffer) => {
     req.body = data.toString('utf8');
     next();
   }));
 });
 
-app.all('*', (req, res) => {
+app.all('*', (req: Request, res: Response) => {
   const echo = {
     path: req.path,
     headers: req.headers,
@@ -33,18 +31,9 @@ app.all('*', (req, res) => {
     subdomains: req.subdomains,
     xhr: req.xhr,
     os: {
-      hostname: os.hostname()
+      hostname: hostname()
     }
   };
-  if (process.env.JWT_HEADER) {
-    const token = req.headers[process.env.JWT_HEADER.toLowerCase()];
-    if (!token) {
-      echo.jwt = token;
-    } else {
-      const decoded = jwt.decode(token, { complete: true });
-      echo.jwt = decoded;
-    }
-  }
   res.json(echo);
 });
 
