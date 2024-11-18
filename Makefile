@@ -14,8 +14,11 @@ node_modules:
 
 deps: node_modules ## Install dependencies
 
-run: deps ## Run local node server
-	node index.js
+build: dist ## Build typescript
+	npm run build
+
+run: dist/index.js ## Run local node server
+	node dist/index.js
 
 dist: ## Build docker image
 ifeq ($(shell docker images --quiet $(IMAGE)),)
@@ -25,7 +28,7 @@ endif
 
 docker-run: dist ## Run container locally
 	docker run --name=http-echo \
-	  --detach --publish=8080:80 \
+	  --detach --publish=8080:3000 \
 	$(IMAGE)
 	docker logs --follow http-echo
 

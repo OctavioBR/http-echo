@@ -1,10 +1,10 @@
-import { hostname }  from 'os';
+import { hostname } from 'os';
 import { Request, Response, NextFunction } from 'express';
 import express = require('express');
 import concat = require('concat-stream');
 import morgan = require('morgan');
 
-const app = express();
+export const app = express();
 app.set('json spaces', 2);
 app.use(morgan('combined'));
 
@@ -35,22 +35,4 @@ app.all('*', (req: Request, res: Response) => {
     }
   };
   res.json(echo);
-});
-
-const server = app.listen(process.env.PORT || 80);
-let calledClose = false;
-
-process.on('exit', () => {
-  if (calledClose) return;
-  console.log('Got exit event. Trying to stop Express server.');
-  server.close(() => console.log("Express server closed"));
-});
-
-process.on('SIGINT', () => {
-  console.log('Got SIGINT. Trying to exit gracefully.');
-  calledClose = true;
-  server.close(() => {
-    console.log("Express server closed. Asking process to exit.");
-    process.exit();
-  });
 });
